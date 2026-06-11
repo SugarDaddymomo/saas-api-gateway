@@ -1,0 +1,23 @@
+spring:
+    application:
+        name: admin-service
+    datasource:
+        url: jdbc:postgresql://localhost:5433/saas_gateway
+        username: postgres
+        password: postgres
+
+    jpa:
+        open-in-view: false
+
+        hibernate:
+            ddl-auto: validate
+
+        properties:
+            hibernate:
+                format_sql: true
+
+    flyway:
+        enabled: true
+
+server:
+  port: 8081
