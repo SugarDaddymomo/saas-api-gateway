@@ -8,7 +8,9 @@ public record CreateTenantResponse(
         UUID id,
         String name,
         TenantStatus status,
-        TenantPlan plan) 
-    {
+        TenantPlan plan,
+        Integer rateLimit    
+) 
+{
 
 }

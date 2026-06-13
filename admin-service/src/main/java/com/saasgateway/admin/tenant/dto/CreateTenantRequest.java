@@ -12,7 +12,10 @@ public record CreateTenantRequest(
     String name,
 
     @NotNull
-    TenantPlan plan
+    TenantPlan plan,
+
+    @NotNull
+    Integer rateLimit
 ) {
 
 }

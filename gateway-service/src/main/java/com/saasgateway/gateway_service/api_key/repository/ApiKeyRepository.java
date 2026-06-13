@@ -1,11 +1,13 @@
 package com.saasgateway.gateway_service.api_key.repository;
 
+import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import com.saasgateway.gateway_service.api_key.entity.ApiKey;
@@ -17,11 +19,10 @@ public interface ApiKeyRepository extends JpaRepository<ApiKey, UUID>, JpaSpecif
 
     Optional<ApiKey> findByKeyHash(String keyHash);
 
-    @Query("""
-        SELECT ak
-        FROM ApiKey ak
-        JOIN FETCH ak.tenant
-        WHERE ak.keyHash = :keyHash
-    """)
+    @Query("SELECT ak FROM ApiKey ak JOIN FETCH ak.tenant WHERE ak.keyHash = :keyHash")
     Optional<ApiKey> findByKeyHashWithTenant(String keyHash);
+
+    @Modifying
+    @Query("update ApiKey a set a.lastUsedAt = :lastUsedAt where a.id = :apiKeyId")
+    void updateLastUsedAt(UUID apiKeyId, Instant lastUsedAt);
 }

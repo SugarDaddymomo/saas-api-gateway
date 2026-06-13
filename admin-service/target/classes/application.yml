@@ -1,8 +1,10 @@
 spring:
+    jackson:
+        time-zone: UTC
     application:
         name: admin-service
     datasource:
-        url: jdbc:postgresql://localhost:5433/saas_gateway
+        url: jdbc:postgresql://localhost:15432/saas_gateway?options=-c%20TimeZone=UTC
         username: postgres
         password: postgres
 
@@ -10,10 +12,12 @@ spring:
         open-in-view: false
 
         hibernate:
-            ddl-auto: validate
+            ddl-auto: none
 
         properties:
             hibernate:
+                jdbc:
+                    time_zone: UTC
                 format_sql: true
 
     flyway:

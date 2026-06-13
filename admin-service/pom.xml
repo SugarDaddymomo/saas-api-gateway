@@ -108,6 +108,9 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<jvmArguments>
+						-Duser.timezone=UTC
+					</jvmArguments>
 				</configuration>
 			</plugin>
 			<plugin>

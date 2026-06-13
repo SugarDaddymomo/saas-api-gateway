@@ -32,6 +32,12 @@ public class Tenant {
     @Enumerated(EnumType.STRING)
     private TenantPlan plan;
 
+    @Column(name = "rate_limit")
+    private Integer rateLimit;
+
+    @Column(name = "rate_limit_window_seconds")
+    private Integer rateLimitWindowSeconds;
+
     @Column(name = "created_at")
     private Instant createdAt;
     @Column(name = "updated_at")

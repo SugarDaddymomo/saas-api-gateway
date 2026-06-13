@@ -50,6 +50,8 @@ public class TenantServiceImpl implements TenantService {
                 .id(UUID.randomUUID())
                 .name(request.name())
                 .plan(request.plan())
+                .rateLimit(request.rateLimit())
+                .rateLimitWindowSeconds(60)
                 .status(TenantStatus.ACTIVE)
                 .createdAt(Instant.now())
                 .updatedAt(Instant.now())
@@ -61,8 +63,8 @@ public class TenantServiceImpl implements TenantService {
             tenant.getId(),
             tenant.getName(),
             tenant.getStatus(),
-            tenant.getPlan()
-
+            tenant.getPlan(),
+            tenant.getRateLimit()
         );
     }
 
@@ -105,7 +107,8 @@ public class TenantServiceImpl implements TenantService {
                 tenant.getId(),
                 tenant.getName(),
                 tenant.getStatus(),
-                tenant.getPlan()
+                tenant.getPlan(),
+                tenant.getRateLimit()
             )
         );
     }
@@ -118,7 +121,8 @@ public class TenantServiceImpl implements TenantService {
             tenant.getId(),
             tenant.getName(),
             tenant.getStatus(),
-            tenant.getPlan()
+            tenant.getPlan(),
+            tenant.getRateLimit()
         );
     }
 
@@ -131,13 +135,17 @@ public class TenantServiceImpl implements TenantService {
         if (Objects.nonNull(request.plan())){
             tenant.setPlan(request.plan());
         }
+        if (Objects.nonNull(request.rateLimit())) {
+            tenant.setRateLimit(request.rateLimit());
+        }
         tenant.setUpdatedAt(Instant.now());
         tenant = tenantRepository.save(tenant);
         return new TenantResponse(
             tenant.getId(),
             tenant.getName(),
             tenant.getStatus(),
-            tenant.getPlan()
+            tenant.getPlan(),
+            tenant.getRateLimit()
         );
     }
 

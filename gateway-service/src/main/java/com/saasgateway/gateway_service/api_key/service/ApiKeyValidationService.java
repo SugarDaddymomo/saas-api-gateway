@@ -1,8 +1,7 @@
 package com.saasgateway.gateway_service.api_key.service;
 
-import com.saasgateway.gateway_service.tenant.entity.Tenant;
+import com.saasgateway.gateway_service.api_key.entity.ApiKey;
 
 public interface ApiKeyValidationService {
-
-    Tenant validate(String rawApiKey);
+    ApiKey validate(String rawApiKey);
 }

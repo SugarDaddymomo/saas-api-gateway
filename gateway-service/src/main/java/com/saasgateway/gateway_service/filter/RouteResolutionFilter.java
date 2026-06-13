@@ -12,17 +12,19 @@ import com.saasgateway.gateway_service.route.service.RouteLookupService;
 import com.saasgateway.gateway_service.tenant.entity.Tenant;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import reactor.core.publisher.Mono;
 
 @Component
 @RequiredArgsConstructor
+@Slf4j
 public class RouteResolutionFilter implements GlobalFilter, Ordered {
 
     private final RouteLookupService routeLookupService;
     
     @Override
     public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
-
+        log.info(">>> RouteResolutionFilter path=" + exchange.getRequest().getURI().getPath());
         String path = exchange.getRequest().getURI().getPath();
 
         //skip test endpoints for now
@@ -44,14 +46,14 @@ public class RouteResolutionFilter implements GlobalFilter, Ordered {
             return exchange.getResponse().setComplete();
         }
 
-        exchange.getAttributes().put("route", route);
+        exchange.getAttributes().put("resolvedRoute", route);
 
         return chain.filter(exchange);
     }
 
     @Override
     public int getOrder() {
-        return -90;
+        return -80;
     }
 
 }
