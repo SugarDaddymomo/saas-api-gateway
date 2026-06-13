@@ -4,6 +4,7 @@ import java.util.UUID;
 
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -33,12 +34,14 @@ public class TenantController {
     private final TenantService tenantService;
 
     @PostMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateTenantResponse createTenant(@Valid @RequestBody CreateTenantRequest request) {
         return tenantService.createTenant(request);
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','VIEWER')")
     @ResponseStatus(HttpStatus.OK)
     public Page<TenantResponse> getTenants(
         @RequestParam(required = false) String search,
@@ -62,24 +65,28 @@ public class TenantController {
     }
 
     @GetMapping("/{tenantId}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','VIEWER')")
     @ResponseStatus(HttpStatus.OK)
     public TenantResponse getTenant(@PathVariable UUID tenantId) {
         return tenantService.getTenant(tenantId);
     }
 
     @PutMapping("/{tenantId}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public TenantResponse updateTenant(@PathVariable UUID tenantId, @RequestBody CreateTenantRequest request) {
         return tenantService.updateTenant(tenantId, request);
     }
 
     @PatchMapping("/{tenantId}/disable")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse disableTenant(@PathVariable UUID tenantId) {
         return tenantService.disableTenant(tenantId);
     }
 
     @PatchMapping("/{tenantId}/enable")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse enableTenant(@PathVariable UUID tenantId) {
         return tenantService.enableTenant(tenantId);

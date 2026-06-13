@@ -2,6 +2,7 @@ package com.saasgateway.admin.common.exception;
 
 import java.time.Instant;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -80,6 +81,17 @@ public class GlobalExceptionHandler {
                 HttpStatus.INTERNAL_SERVER_ERROR.getReasonPhrase(),
                 ex.getMessage(),
                 request.getRequestURI()
+        );
+    }
+
+    @ExceptionHandler(AccessDeniedException.class)
+    public ErrorResponse handleAccessDenied(AccessDeniedException ex, HttpServletRequest request) {
+        return new ErrorResponse(
+            Instant.now(),
+            HttpStatus.FORBIDDEN.value(),
+            "Forbidden",
+            ex.getMessage(),
+            request.getRequestURI()
         );
     }
 }

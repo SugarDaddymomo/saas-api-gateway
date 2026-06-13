@@ -3,6 +3,7 @@ package com.saasgateway.admin.route.controller;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,18 +31,21 @@ public class RouteController {
     private final RouteService routeService;
 
     @PostMapping("/tenants/{tenantId}/routes")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateRouteResponse createRoute(@PathVariable UUID tenantId, @RequestBody CreateRouteRequest request) {
         return routeService.createRoute(tenantId, request);
     }
 
     @GetMapping("/routes/{routeId}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','VIEWER')")
     @ResponseStatus(HttpStatus.OK)
     public RouteResponse getSingleRoute(@PathVariable UUID routeId) {
         return routeService.getRoute(routeId);
     }
 
     @GetMapping("/tenants/{tenantId}/routes")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','VIEWER')")
     @ResponseStatus(HttpStatus.OK)
     public Page<RouteResponse> getRoutes(
         @PathVariable UUID tenantId,
@@ -57,18 +61,21 @@ public class RouteController {
     }
 
     @PatchMapping("/routes/{routeId}/enable")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse enableRoute(@PathVariable UUID routeId) {
         return routeService.enableRoute(routeId);
     }
 
     @PatchMapping("/routes/{routeId}/disable")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse disableRoute(@PathVariable UUID routeId) {
         return routeService.disableRoute(routeId);
     }
 
     @PutMapping("/routes/{routeId}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     public RouteResponse updateRoute(@PathVariable UUID routeId, @RequestBody CreateRouteRequest request) {
         return routeService.updateRoute(routeId, request);
     }

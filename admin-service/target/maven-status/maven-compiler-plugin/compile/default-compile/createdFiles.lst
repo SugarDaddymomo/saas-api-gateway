@@ -40,6 +40,7 @@ com\saasgateway\admin\common\exception\ApiKeyNotFoundException.class
 com\saasgateway\admin\tenant\controller\TenantController.class
 com\saasgateway\admin\api_key\service\ApiKeyService.class
 com\saasgateway\admin\api_key\dto\ApiKeySearchRequest.class
+com\saasgateway\admin\common\config\CorsConfig.class
 com\saasgateway\admin\api_key\util\ApiKeyGenerator.class
 com\saasgateway\admin\route\repository\RouteRepository.class
 com\saasgateway\admin\route\service\impl\RouteServiceImpl.class

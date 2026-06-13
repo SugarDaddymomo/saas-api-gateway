@@ -3,6 +3,7 @@ package com.saasgateway.admin.api_key.controller;
 import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -30,12 +31,14 @@ public class ApiKeyController {
     private final ApiKeyService apiKeyService;
 
     @PostMapping("/tenants/{tenantId}/api-keys")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public CreateApiKeyResponse createApiKey(@PathVariable UUID tenantId, @Valid @RequestBody CreateApiKeyRequest request) {
         return apiKeyService.createApiKey(tenantId, request);
     }
 
     @GetMapping("/tenants/{tenantId}/api-keys")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','VIEWER')")
     @ResponseStatus(HttpStatus.OK)
     public Page<ApiKeyResponse> getTenantApiKeys(
         @PathVariable UUID tenantId,
@@ -59,18 +62,21 @@ public class ApiKeyController {
     }
 
     @GetMapping("/api-keys/{apiKeyId}")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN','ADMIN','VIEWER')")
     @ResponseStatus(HttpStatus.OK)
     public ApiKeyResponse getApiKey(@PathVariable UUID apiKeyId) {
         return apiKeyService.getApiKey(apiKeyId);
     }
 
     @PatchMapping("/api-keys/{apiKeyId}/revoke")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse revokeApiKey(@PathVariable UUID apiKeyId) {
         return apiKeyService.revokeApiKey(apiKeyId);
     }
 
     @PatchMapping("/api-keys/{apiKeyId}/activate")
+    @PreAuthorize("hasAnyRole('SUPER_ADMIN', 'ADMIN')")
     @ResponseStatus(HttpStatus.OK)
     public MessageResponse activateApiKey(@PathVariable UUID apiKeyId) {
         return apiKeyService.activateApiKey(apiKeyId);
